@@ -3,6 +3,6 @@
      copyright notices and license terms. -->
 <data>
     <xpath expr="/form/button[@name='post']" position="before">
-        <button string="Draft" name="draft" icon="tryton-clear" colspan="2"/>
+        <button name="draft" icon="tryton-clear" colspan="2"/>
     </xpath>
 </data>
