@@ -3,6 +3,6 @@
      copyright notices and license terms. -->
 <data>
     <xpath expr="/tree/button[@name='post']" position="before">
-        <button name="draft" string="Draft"/>
+        <button name="draft"/>
     </xpath>
 </data>
