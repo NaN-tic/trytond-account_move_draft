@@ -2,6 +2,12 @@
 msgid ""
 msgstr "Content-Type: text/plain; charset=utf-8\n"
 
+msgctxt "model:ir.message,text:msg_delete_moves_invoice"
+msgid "You cannot delete \"%(moves)s\" while the invoice is not in draft."
+msgstr ""
+"No puede eliminar \"%(moves)s\" cuando está relacionado con una factura que "
+"no está en estado borrador."
+
 msgctxt "model:ir.model.button,string:move_draft_button"
 msgid "Draft"
 msgstr "Borrador"
