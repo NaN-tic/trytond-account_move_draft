@@ -5,6 +5,7 @@ from trytond.pyson import Eval
 from trytond.pool import PoolMeta
 from trytond.i18n import gettext
 from trytond.exceptions import UserError
+from trytond.transaction import Transaction
 
 __all__ = ['Move']
 
@@ -32,14 +33,15 @@ class Move(metaclass=PoolMeta):
 
     @classmethod
     def delete(cls, moves):
-        invoices = [move for move in moves if move.origin
-            and move.origin.__name__ == 'account.invoice'
-            and move.origin.state != 'draft']
+        if not Transaction().context.get('draft_invoices', False):
+            invoices = [move for move in moves if move.origin
+                and move.origin.__name__ == 'account.invoice'
+                and move.origin.state != 'draft']
 
-        if invoices:
-            names = ', '.join(m.rec_name for m in invoices[:5])
-            if len(invoices) > 5:
-                names += '...'
-            raise UserError(gettext('account_move_draft.msg_delete_moves_invoice',
-                moves=names))
+            if invoices:
+                names = ', '.join(m.rec_name for m in invoices[:5])
+                if len(invoices) > 5:
+                    names += '...'
+                raise UserError(gettext('account_move_draft.msg_delete_moves_invoice',
+                    moves=names))
         super(Move, cls).delete(moves)
