@@ -2,10 +2,11 @@
 # copyright notices and license terms.
 from trytond.model import ModelView
 from trytond.pyson import Eval
-from trytond.pool import PoolMeta
+from trytond.pool import PoolMeta, Pool
 from trytond.i18n import gettext
 from trytond.exceptions import UserError
 from trytond.transaction import Transaction
+
 
 __all__ = ['Move']
 
@@ -16,7 +17,7 @@ class Move(metaclass=PoolMeta):
     @classmethod
     def __setup__(cls):
         super(Move, cls).__setup__()
-        if not 'state' in cls._check_modify_exclude:
+        if 'state' not in cls._check_modify_exclude:
             cls._check_modify_exclude.append('state')
         cls._buttons.update({
             'draft': {
@@ -27,9 +28,11 @@ class Move(metaclass=PoolMeta):
     @classmethod
     @ModelView.button
     def draft(cls, moves):
+        Line = Pool().get('account.move.line')
         cls.write(moves, {
             'state': 'draft',
             })
+        Line.check_modify([l for m in moves for l in m.lines])
 
     @classmethod
     def delete(cls, moves):
